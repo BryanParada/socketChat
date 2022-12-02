@@ -38,9 +38,10 @@ socket.on('disconnect', function() {
 // });
 
 // Escuchar información
-socket.on('createMessage', function(mensaje) {
+socket.on('createMessage', function(message) {
 
-    console.log('Server:', mensaje);
+    console.log('Server:', message);
+    renderizeMessages(message);
 
 });
 

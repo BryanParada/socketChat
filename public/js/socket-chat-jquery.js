@@ -1,7 +1,13 @@
 var params = new URLSearchParams( window.location.search);
 
+var user = params.get('name');
+var room = params.get('room')
+
 //referencias de jquery
 var divUsers = $('#divUsers');
+var formSend = $('#formSend');
+var txtMessage  = $('#txtMessage');
+var divChatbox  = $('#divChatbox');
 
 // funciones para renderizar usuarios
 function renderizeUsers( persons ){ //[{},{},{}]
@@ -31,7 +37,40 @@ divUsers.on('click', 'a', function(){ //a = en cualquier anchortype
     if (id){
         console.log(id);
     }
+});
 
+formSend.on('submit', function(event){
+
+    event.preventDefault();
+
+    if (txtMessage.val().trim().length === 0 ){
+        return;
+    } 
+     
     
+    socket.emit('createMessage', {
+        name: user,
+        message: txtMessage.val()
+    }, function(message) {
+        txtMessage.val('').focus();
+        renderizeMessages(message);
+    });
+
 
 })
+
+function renderizeMessages( message){
+    var html = ''
+
+    html += '<li class="animated fadeIn">'
+    html += '   <div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>'
+    html += '   <div class="chat-content">'
+    html += '       <h5>'+ message.name +'</h5>'
+    html += '       <div class="box bg-light-info">'+message.message+'</div>'
+    html += '   </div>'
+    html += '   <div class="chat-time">10:56 am</div>'
+    html += '</li>'
+
+    divChatbox.append(html);
+
+}
