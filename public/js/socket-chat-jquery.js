@@ -22,3 +22,16 @@ divUsers.html(html);
 
 
 }
+
+//Listeners
+divUsers.on('click', 'a', function(){ //a = en cualquier anchortype
+
+    var id = $(this).data('id');
+
+    if (id){
+        console.log(id);
+    }
+
+    
+
+})
