@@ -17,8 +17,18 @@ io.on('connection', (client) => {
 
         let persons = users.addPerson( client.id, data.name );
 
+        client.broadcast.emit('listPerson', users.getPersons() );
+
         callback(persons); // {persons}  - E.callback is not a function
         
+    });
+
+    client.on('disconnect', () => {
+     
+          
+        let deletedPerson = users.deletePerson( client.id );
+        client.broadcast.emit('createMessage', { user: 'Admin', message: `${ deletedPerson.name} left the chat`});
+        client.broadcast.emit('listPerson', users.getPersons() );
     })
 
 

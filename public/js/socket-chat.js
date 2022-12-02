@@ -36,8 +36,16 @@ socket.emit('sendMessage', {
 });
 
 // Escuchar información
-socket.on('sendMessage', function(mensaje) {
+socket.on('createMessage', function(mensaje) {
 
     console.log('Server:', mensaje);
 
 });
+
+//Escuchar cambiso de usuarios
+// cuando un usario entra o sale del chat
+socket.on('listPerson', function(persons) { 
+    console.log(persons);
+
+});
+
