@@ -10,9 +10,8 @@ io.on('connection', (client) => {
  
     client.on('enterChat', (data, callback) => {
 
-        console.log(data);
+        //console.log(data);
         
-
         if (!data.name || !data.room){
             return callback({
                 error: true,
@@ -22,11 +21,11 @@ io.on('connection', (client) => {
 
         client.join(data.room);
 
-        let persons = users.addPerson( client.id, data.name, data.room);
+        users.addPerson( client.id, data.name, data.room);
 
-        client.broadcast.emit('listPerson', users.getPersons() );
+        client.broadcast.to(data.room).emit('listPerson', users.getPersonsByRoom(data.room) );
 
-        callback(persons); // {persons}  - E.callback is not a function
+        callback(users.getPersonsByRoom(data.room)); // {persons}  - E.callback is not a function
         
     });
 
@@ -35,13 +34,13 @@ io.on('connection', (client) => {
         let person = users.getPerson(client.id);
         
         let message = createMessage( person.name, data.message);
-        client.broadcast.emit( 'createMessage', message);
+        client.broadcast.to(person.room).emit( 'createMessage', message);
     })
 
     client.on('disconnect', () => { 
         let deletedPerson = users.deletePerson( client.id );
-        client.broadcast.emit('createMessage', createMessage('Admin', `${ deletedPerson.name} left the chat`));
-        client.broadcast.emit('listPerson', users.getPersons() );
+        client.broadcast.to(deletedPerson.room).emit('createMessage', createMessage('Admin', `${ deletedPerson.name} left the chat`));
+        client.broadcast.to(deletedPerson.room).emit('listPerson', users.getPersonsByRoom( deletedPerson.room ) );
     })
 
     //MENSAJES PRIVADOS SERVER

@@ -32,7 +32,13 @@ class Users {
     }
 
     getPersonsByRoom( room ){
-        //...
+        //OPCION1
+        // let personsInRoom = this.persons.filter( person => {
+        //     return person.room === room
+        // })
+        //OPCION 2
+        let personsInRoom = this.persons.filter( person => person.room === room);
+        return personsInRoom
     }
 
     deletePerson(id){
