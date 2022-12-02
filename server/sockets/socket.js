@@ -10,14 +10,19 @@ io.on('connection', (client) => {
  
     client.on('enterChat', (data, callback) => {
 
-        if (!data.name){
+        console.log(data);
+        
+
+        if (!data.name || !data.room){
             return callback({
                 error: true,
-                message: 'Name is required'
+                message: 'Name and Room is required'
             })
         }
 
-        let persons = users.addPerson( client.id, data.name );
+        client.join(data.room);
+
+        let persons = users.addPerson( client.id, data.name, data.room);
 
         client.broadcast.emit('listPerson', users.getPersons() );
 
