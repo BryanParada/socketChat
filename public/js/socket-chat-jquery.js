@@ -4,13 +4,16 @@ var user = params.get('name');
 var room = params.get('room')
 
 //referencias de jquery
-var divUsers = $('#divUsers');
-var formSend = $('#formSend');
+var divUsers    = $('#divUsers');
+var formSend    = $('#formSend');
 var txtMessage  = $('#txtMessage');
 var divChatbox  = $('#divChatbox');
+var divTitle    = $('#divTitle');
 
 // funciones para renderizar usuarios
 function renderizeUsers( persons ){ //[{},{},{}]
+
+    divTitle.html('<h3 class="box-title">Chat room <small>' + params.get('room') + '</small> </h3>')
 
     var html = '';
     
@@ -18,13 +21,16 @@ function renderizeUsers( persons ){ //[{},{},{}]
     html += '   <a href="javascript:void(0)" class="active"> Chat of <span> ' + params.get('room') + ' </span></a>';
     html += '</li>';
 
-for( var i = 0; i<persons.length; i++){
+for( var i = 0; i<persons.length; i++){ 
+    var imgUs = i + 1;
+    
     html += '<li>'
-    html +=  ' <a data-id="'+ persons[i].id + '" href="javascript:void(0)"><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>' + persons[i].name + ' <small class="text-success">online</small></span></a>'
+    html +=  ' <a data-id="'+ persons[i].id + '" href="javascript:void(0)"><img src="assets/images/users/'+imgUs.toString()+'.jpg" alt="user-img" class="img-circle"> <span>' + persons[i].name + ' <small class="text-success">online</small></span></a>'
     html += '</li>'
 }
 
 divUsers.html(html);
+
 
 
 }
@@ -76,13 +82,12 @@ function renderizeMessages( message, me ){
         html += '    <h5>'+ message.name +'</h5>'
         html += '    <div class="box bg-light-inverse">'+message.message+'</div>'
         html += '</div>'
-        html += '<div class="chat-img"><img src="assets/images/users/5.jpg" alt="user" /></div>'
+        html += '<div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>'
         html += '<div class="chat-time">'+hour+'</div>'
     }else{
         html += '<li class="animated fadeIn">'
         if(message.name !== 'Admin'){
-            html += '   <div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>'
-
+            html += '   <div class="chat-img"><img src="assets/images/users/2.jpg" alt="user" /></div>' 
         }
         html += '   <div class="chat-content">'
         html += '       <h5>'+ message.name +'</h5>'
