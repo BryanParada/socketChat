@@ -1,42 +1,26 @@
 const { io } = require('../server');
+const {Users} = require('../classes/user')
 
+const users = new Users();
 
 io.on('connection', (client) => {
 
-    console.log('User Connected');
+ 
+    client.on('enterChat', (data, callback) => {
 
-    client.emit('sendMessage', {
-        user: 'Admin',
-        message: 'Welcome to the app'
-    });
+        if (!data.name){
+            return callback({
+                error: true,
+                message: 'Name is required'
+            })
+        }
 
+        let persons = users.addPerson( client.id, data.name );
 
-
-    client.on('disconnect', () => {
-        console.log('User disconnected');
-    });
-
-    // Escuchar el cliente
-    client.on('sendMessage', (data, callback) => {
-
-        console.log(data);
-
-        client.broadcast.emit('sendMessage', data);
+        callback(persons); // {persons}  - E.callback is not a function
+        
+    })
 
 
-        // if (mensaje.user) {
-        //     callback({
-        //         resp: 'TODO SALIO BIEN!'
-        //     });
-
-        // } else {
-        //     callback({
-        //         resp: 'TODO SALIO MAL!!!!!!!!'
-        //     });
-        // }
-
-
-
-    });
 
 });

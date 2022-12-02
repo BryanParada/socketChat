@@ -1,7 +1,22 @@
 var socket = io();
 
+var params = new URLSearchParams( window.location.search);
+
+if (!params.has('name')){
+    window.location = 'index.html';
+    throw new Error('Name is required');
+}
+
+var user = {
+    name: params.get('name')
+}
+
 socket.on('connect', function() {
     console.log('Connected to the server');
+
+    socket.emit('enterChat', user, function( resp ){
+        console.log('Connected users', resp); 
+    });
 });
 
 // escuchar
