@@ -1,7 +1,9 @@
 const { io } = require('../server');
 const {Users} = require('../classes/user')
-
+const { createMessage } = require('../utilities/utilities')
 const users = new Users();
+
+
 
 io.on('connection', (client) => {
 
@@ -23,11 +25,17 @@ io.on('connection', (client) => {
         
     });
 
-    client.on('disconnect', () => {
-     
-          
+    client.on('createMessage', (data) => {
+
+        let person = users.getPerson(client.id);
+        
+        let message = createMessage( person.name, data.message);
+        client.broadcast.emit( 'createMessage', message);
+    })
+
+    client.on('disconnect', () => { 
         let deletedPerson = users.deletePerson( client.id );
-        client.broadcast.emit('createMessage', { user: 'Admin', message: `${ deletedPerson.name} left the chat`});
+        client.broadcast.emit('createMessage', createMessage('Admin', `${ deletedPerson.name} left the chat`));
         client.broadcast.emit('listPerson', users.getPersons() );
     })
 
