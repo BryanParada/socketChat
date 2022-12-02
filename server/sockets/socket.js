@@ -24,6 +24,7 @@ io.on('connection', (client) => {
         users.addPerson( client.id, data.name, data.room);
 
         client.broadcast.to(data.room).emit('listPerson', users.getPersonsByRoom(data.room) );
+        client.broadcast.to(data.room).emit('createMessage', createMessage('Admin', `${ data.name} has joined the chat`));
 
         callback(users.getPersonsByRoom(data.room)); // {persons}  - E.callback is not a function
         

@@ -41,8 +41,8 @@ socket.on('disconnect', function() {
 socket.on('createMessage', function(message) {
 
     console.log('Server:', message);
-    renderizeMessages(message);
-
+    renderizeMessages(message, false);
+    scrollBottom();
 });
 
 //Escuchar cambiso de usuarios
