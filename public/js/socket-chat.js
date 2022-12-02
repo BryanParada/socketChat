@@ -49,3 +49,10 @@ socket.on('listPerson', function(persons) {
 
 });
 
+//mensajes privados
+//ACCION DEL CLIENTE
+socket.on('privateMessage', function(message){
+    console.log('Private message: ', message);
+    
+})
+

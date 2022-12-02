@@ -39,6 +39,19 @@ io.on('connection', (client) => {
         client.broadcast.emit('listPerson', users.getPersons() );
     })
 
+    //MENSAJES PRIVADOS SERVER
+    client.on('privateMessage', data =>{
+
+        let person = users.getPerson(client.id);
+
+        //mandar msje a todas las personas conectadas
+        //client.broadcast.emit('privateMessage', createMessage( person.name, data.message))
+
+        //mandar msje a alguien
+        client.broadcast.to(data.toUser).emit('privateMessage', createMessage( person.name, data.message))
+
+    })
+
 
 
 });
